@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Bond Web Service Demo</title>
+<title>Video Game Web Service Demo</title>
 <style>
     body {font-family:georgia;}
     
@@ -34,18 +34,19 @@ $(document).ready(function() {
 
 function loadAJAX(cat)
 {
-    //AJAX connection will go here
-    //alert('cat is: ' + cat);
-
-    $.ajax({
-        type: "GET", 
-        dataType: "json", 
-        url: "api.php?cat=" + cat,
-        success: bondJSON
-
-    });
+   $.ajax({
+       type: "GET",
+       dataType: "json",
+       url: "api.php?cat=" + cat,
+       success: bondJSON,
+       error: function(xhr, status, error){
+        let errorMessage = xhr.status + ': ' + xhr.statusText
+        alert('Error - ' + errorMessage);
+    }
+ 
+   });
 }
-    
+
 function toConsole(data)
 {//return data to console for JSON examination
     console.log(data); //to view,use Chrome console, ctrl + shift + j
@@ -55,23 +56,28 @@ function bondJSON(data){
     //here is how I see data returned via the console
     console.log(data);
 
+	//clears other clicked fils
+	$('#films').html('');
+	
 	//id's type of data returned
 	$('#filmtitle').html(data.title);
 
+    /*
 	$.each(data.films,function(i,item){
 		let myFilm = bondTemplate(item);
-
-	$('<div></div').html(myFilm).appendTo('#films');
-	}
+		$('<div></div').html(myFilm).appendTo('#films');
+	});
 
     // this loads data on page but bunched up
     //$("#output").text(JSON.stringify(data));
 
-	/*
+    //this creates a map of json on our pafe
+	*/
+    
     let myData = JSON.stringify(data,null,4);
     myData = "<pre>" + myData + "</pre>";
     $("#output").html(myData);
-	*/
+	
 
 }
 
@@ -98,9 +104,9 @@ function bondTemplate(film){
 </script>
 </head>
     <body>
-    <h1>Bond Web Service</h1>
-        <a href="year" class="category">Bond Films By Year</a><br />
-        <a href="box" class="category">Bond Films By International Box Office Totals</a>
+    <h1>Video Game Web Service</h1>
+        <a href="year" class="category">Video Games By Year</a><br />
+        <a href="title" class="category">Video Games By Title</a>
         <h3 id="filmtitle">Title Will Go Here</h3>
         <div id="films">
 			<!--
